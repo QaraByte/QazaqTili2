@@ -1,6 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using QazaqTili2;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//builder.Services.AddDbContext<ApplicationContext>(options =>
+//            options.UseSqlServer(
+//                Configuration.GetConnectionString("MyDatabase")));
+//builder.Services.AddDefaultIdentity<IdentityUser>()
+//    .AddEntityFrameworkStores<ApiDbContext>();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(connectionString));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
