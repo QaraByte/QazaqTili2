@@ -36,29 +36,31 @@
 <div class="modal" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content">
+          <form action="/Home/AddWord" class="form-horizontal" role="form" method="post" id="frmWord">
 
-      <!-- Modal Header -->
+              <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">Добавить новое слово</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <!-- Modal body -->
+              <!-- Modal body -->
       <div class="modal-body">
-        <div class="input-group input-group-sm mb-3">
+          <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroup-sizing-sm">Слово</span>
         </div>
-        <input type="text" class="form-control" aria-label="word" aria-describedby="inputGroup-sizing-sm">
+        <input type="text" class="form-control" name="word" aria-label="word" aria-describedby="inputGroup-sizing-sm">
         </div>
       </div>
 
-      <!-- Modal footer -->
+            <!-- Modal footer -->
       <div class="modal-footer">
         @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Добавить</button>
+        <button type="submit" class="btn btn-primary">Добавить</button>
       </div>
+         </form>
 
     </div>
   </div>

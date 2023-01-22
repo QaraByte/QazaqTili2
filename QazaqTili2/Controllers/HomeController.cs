@@ -44,5 +44,21 @@ namespace QazaqTili2.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult AddWord()
+        {
+            var list = Request.Form.ToList();
+
+            for(int i=0; i<list.Count; i++)
+            {
+                Word word = new Word();
+                word.Name = list[i].Value.ToString();
+                word.CreateTime = DateTime.Now;
+                _context.Words.Add(word);
+                _context.SaveChanges();
+            }
+
+            return Redirect("Index");
+        }
     }
 }
