@@ -10,7 +10,7 @@ namespace QazaqTili2.Models
         [Key, Column(Order = 0)]
         public int Id { get; set; }
         public string Name { get; set; }
-        [DefaultValue("getdate()")]
-        public DateTime CreateTime { get; set; }
+        //[DefaultValue("getdate()")]
+        public DateTime? CreateTime { get; set; }
     }
 }

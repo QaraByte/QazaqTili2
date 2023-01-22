@@ -18,18 +18,20 @@ namespace QazaqTili2.Controllers
 
         public IActionResult Index()
         {
-            Word word = new Word()
-            {
-                Name = "Барады"
-            };
+            //Word word = new Word()
+            //{
+            //    Name = "Барады",
+            //    CreateTime=DateTime.Now
+            //};
 
             //using (ApplicationContext db = new ApplicationContext())
             //{
-            _context.Words.Add(word);
-            _context.SaveChanges();
+                var words = _context.Words.ToList();
+                //_context.Words.Add(word);
+                //_context.SaveChanges();
             //}
 
-            return View();
+            return View(words);
         }
 
         public IActionResult Privacy()
