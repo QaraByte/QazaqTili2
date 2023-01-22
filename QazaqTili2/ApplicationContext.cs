@@ -18,6 +18,14 @@ namespace QazaqTili2
         //    optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=Qazaqtili;Trusted_Connection=True;");
         //}
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Word>()
+                .HasOne(w => w.WordTypes)
+                .WithMany(wt => wt.Words)
+                .HasForeignKey(w => w.WordTypeId);
+        }
+
         public DbSet<Word> Words => Set<Word>();
     }
 }

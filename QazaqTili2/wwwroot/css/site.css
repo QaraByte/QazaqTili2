@@ -20,3 +20,19 @@ body {
 .words td{
     border:1px solid #cecece;
 }
+
+    .words td:nth-child(1){
+        width:50px;
+    }
+
+.words td:nth-child(2) {
+    width: 200px;
+}
+
+.words td:nth-child(3) {
+    width: 160px;
+}
+
+.words td:nth-child(4) {
+    width: 220px;
+}

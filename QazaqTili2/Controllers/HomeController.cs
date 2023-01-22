@@ -26,7 +26,9 @@ namespace QazaqTili2.Controllers
 
             //using (ApplicationContext db = new ApplicationContext())
             //{
-                var words = _context.Words.ToList();
+                var words = _context.Words
+                .Include(w => w.WordTypes)
+                .ToList();
                 //_context.Words.Add(word);
                 //_context.SaveChanges();
             //}
