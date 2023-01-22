@@ -14,5 +14,6 @@ namespace QazaqTili2.Models
         public DateTime? CreateTime { get; set; }
         public WordTypes? WordTypes { get; set; }
         public int? WordTypeId { get; set; }
+        public IEnumerable<YoutubeLinks>? YoutubeLinks { get; set; }
     }
 }
