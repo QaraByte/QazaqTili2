@@ -52,7 +52,17 @@
         <span class="input-group-text" id="inputGroup-sizing-sm">Слово</span>
         </div>
         <input type="text" class="form-control" name="word" aria-label="word" aria-describedby="inputGroup-sizing-sm">
+        <br />
         </div>
+        <div class="input-group input-group-sm mb-3">
+            <label for="word-types">Тип слова:</label>
+  <select name="word-types" id="word-types">
+      @foreach(var item in ViewBag.WordTypes)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+  </select>
+            </div>
       </div>
 
             <!-- Modal footer -->

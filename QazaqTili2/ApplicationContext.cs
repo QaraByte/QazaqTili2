@@ -27,5 +27,6 @@ namespace QazaqTili2
         }
 
         public DbSet<Word> Words => Set<Word>();
+        public DbSet<WordTypes> WordTypes => Set<WordTypes>();
     }
 }

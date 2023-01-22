@@ -29,6 +29,9 @@ namespace QazaqTili2.Controllers
                 var words = _context.Words
                 .Include(w => w.WordTypes)
                 .ToList();
+
+            var wordTypes = _context.WordTypes.ToList();
+            ViewBag.WordTypes = wordTypes;
                 //_context.Words.Add(word);
                 //_context.SaveChanges();
             //}
@@ -51,14 +54,15 @@ namespace QazaqTili2.Controllers
         {
             var list = Request.Form.ToList();
 
-            for(int i=0; i<list.Count; i++)
-            {
-                Word word = new Word();
-                word.Name = list[i].Value.ToString();
-                word.CreateTime = DateTime.Now;
-                _context.Words.Add(word);
-                _context.SaveChanges();
-            }
+            string wordName = list.Find(x => x.Key == "word").Value.ToString();
+            int wordType = int.Parse(list.Find(x => x.Key == "word-types").Value);
+
+            Word word = new Word();
+            word.Name = wordName;
+            word.CreateTime = DateTime.Now;
+            word.WordTypeId = wordType;
+            _context.Words.Add(word);
+            _context.SaveChanges();
 
             return Redirect("Index");
         }
