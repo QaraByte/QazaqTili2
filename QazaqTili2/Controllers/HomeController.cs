@@ -23,7 +23,12 @@ namespace QazaqTili2.Controllers
             var words = _context.Words
             .Include(w => w.WordTypes)
             .Include(wt => wt.YoutubeLinks)
+            //=> new {}
             .ToList();
+
+            ViewBag.WordsCount = words.Count;
+
+            //words[0].YoutubeLink
 
             var wordTypes = _context.WordTypes.ToList();
             ViewBag.WordTypes = wordTypes;
@@ -73,6 +78,16 @@ namespace QazaqTili2.Controllers
             }
 
             return Redirect("Index");
+        }
+
+        public IActionResult EditWord(int id)
+        {
+            var word = _context.Words.FirstOrDefault(x => x.Id == id);
+
+            var youtubeLinks = _context.YoutubeLinks.Where(x => x.WordId == id).ToList();
+            ViewBag.YLinks = youtubeLinks;
+
+            return View(word);
         }
     }
 }

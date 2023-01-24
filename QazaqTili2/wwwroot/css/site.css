@@ -36,3 +36,7 @@ body {
 .words td:nth-child(4) {
     width: 220px;
 }
+
+.words caption{
+    caption-side:top;
+}

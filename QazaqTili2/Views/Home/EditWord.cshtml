@@ -1,0 +1,14 @@
+﻿
+
+<div>
+    <p>Id: @Model.Id</p>
+    <p>Слово: @Model.Name</p>
+    <p>Время создания: @Model.CreateTime</p>
+
+    @foreach(var item in ViewBag.YLinks)
+    {
+        <p>Id: @item.Id</p>
+        <p>Ссылка: <a href="@item.Url" target="_blank">Ютуб</a></p>
+        <p>Время: @item.WordTime</p>
+    }
+</div>

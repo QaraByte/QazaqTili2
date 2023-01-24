@@ -10,11 +10,14 @@
 </button>
 
 <table class="words">
+    <caption>Всего слов: @ViewBag.WordsCount</caption>
     <thead>
         <tr>
             <th>Id</th>
             <th>Наименование</th>
             <th>Время создания</th>
+            <th>Тип слова</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -27,58 +30,69 @@
                     <td>@item.Name</td>
                     <td>@item.CreateTime</td>
                     <td>@item.WordTypeId - @item.WordTypes?.Name</td>
+                    <td><a href="/Home/EditWord/@item.Id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
                 </tr>
             }
         }
     </tbody>
 </table>
 
+
 <!-- The Modal -->
 <div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-          <form action="/Home/AddWord" class="form-horizontal" role="form" method="post" id="frmWord">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Home/AddWord" class="form-horizontal" role="form" method="post" id="frmWord">
 
-              <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Добавить новое слово</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Добавить новое слово</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-              <!-- Modal body -->
-      <div class="modal-body">
-          <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-sm">Слово</span>
-        </div>
-        <input type="text" class="form-control" name="word" aria-label="word" aria-describedby="inputGroup-sizing-sm">
-        <br />
-        </div>
-        <div class="input-group input-group-sm mb-3">
-            <label for="word-types">Тип слова:</label>
-  <select name="word-types" id="word-types">
-      @foreach(var item in ViewBag.WordTypes)
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Слово</span>
+                        </div>
+                        <input type="text" class="form-control" name="word" aria-label="word" aria-describedby="inputGroup-sizing-sm">
+                        <br />
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <label for="word-types">Тип слова:</label>
+                        <select name="word-types" id="word-types">
+                            @foreach (var item in ViewBag.WordTypes)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
-  </select>
-            </div>
-            <div class="input-group input-group-sm mb-3">
-            <input type="text" class="form-control" name="youtube" aria-label="youtube-url" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-            <input type="text" class="form-control" name="wordtime" aria-label="word-time" aria-describedby="inputGroup-sizing-sm">
-            </div>
-      </div>
+                        </select>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Ссылка на Ютуб</span>
+                        </div>
+                        <input type="text" class="form-control" name="youtube" aria-label="youtube-url" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Время, когда встречается слово</span>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" name="wordtime" aria-label="word-time" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Modal footer -->
-      <div class="modal-footer">
-        @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Добавить</button>
-      </div>
-         </form>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
 
+        </div>
     </div>
-  </div>
-  </div>
+</div>
+
