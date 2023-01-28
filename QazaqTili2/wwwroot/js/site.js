@@ -17,5 +17,12 @@ $(document).ready(function () {
     //    modal.find('.modal-body input').val(recipient)
     //})
 
+    $(".edit-link").click(function () {
+        let id = $(this).data('id');
+        let href = $('.edit-links a.video-link').attr('href');
+        $('#edit-link-modal').val(href);
+        //$('#editModal')
+    });
+
 });
 

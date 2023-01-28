@@ -89,5 +89,13 @@ namespace QazaqTili2.Controllers
 
             return View(word);
         }
+
+        public IActionResult EditYoutubeLink(int id)
+        {
+            var link = _context.YoutubeLinks.Find(id);
+            int wordid = link.WordId;
+
+            return Redirect("Home/EditWord/" + wordid);
+        }
     }
 }

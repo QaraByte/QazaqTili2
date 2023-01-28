@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Home/AddWord" class="form-horizontal" role="form" method="post" id="frmWord">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактировать ссылку</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Ссылка на Ютуб</span>
+                        </div>
+                        <input type="text" class="form-control" name="youtube" aria-label="youtube-url" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Время, когда встречается слово</span>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" name="wordtime" aria-label="word-time" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Редактировать</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

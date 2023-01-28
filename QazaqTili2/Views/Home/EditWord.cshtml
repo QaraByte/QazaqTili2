@@ -1,14 +1,65 @@
 ﻿
 
 <div>
-    <p>Id: @Model.Id</p>
-    <p>Слово: @Model.Name</p>
+    <p>Id: @Model.Id Слово: <span class="word-edit">@Model.Name</span></p>
     <p>Время создания: @Model.CreateTime</p>
 
-    @foreach(var item in ViewBag.YLinks)
+    @foreach (var item in ViewBag.YLinks)
     {
-        <p>Id: @item.Id</p>
-        <p>Ссылка: <a href="@item.Url" target="_blank">Ютуб</a></p>
-        <p>Время: @item.WordTime</p>
+        @*        <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+    Добавить новое слово
+    </button>*@
+
+        <p class="edit-links">
+            Ссылка:
+            <a href="@item.Url" class="video-link" target="_blank">@item.Url</a>
+            <span>Время: @item.WordTime</span>
+            <a href="/Home/EditYouLink/@item.Id" class="edit-link" data-id="@item.Id" data-bs-toggle="modal" data-bs-target="#editModal">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </a>
+        </p>
     }
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Home/EditYoutubeLink" class="form-horizontal" role="form" method="post" id="frmWord">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактирование ссылки</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Ссылка на Ютуб</span>
+                        </div>
+                        <input type="text" class="form-control" id="edit-link-modal" name="youtube" aria-label="youtube-url" aria-describedby="edit-link-modal">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Время, когда встречается слово</span>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" id="edit-time-modal" name="wordtime" aria-label="word-time" aria-describedby="edit-time-modal">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>

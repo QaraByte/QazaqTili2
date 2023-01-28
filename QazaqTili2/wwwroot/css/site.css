@@ -40,3 +40,8 @@ body {
 .words caption{
     caption-side:top;
 }
+
+.word-edit{
+    font-weight:600;
+    color:darkblue;
+}
