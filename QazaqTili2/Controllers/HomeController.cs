@@ -90,12 +90,26 @@ namespace QazaqTili2.Controllers
             return View(word);
         }
 
+        [HttpPost]
         public IActionResult EditYoutubeLink(int id)
         {
             var link = _context.YoutubeLinks.Find(id);
             int wordid = link.WordId;
 
-            return Redirect("Home/EditWord/" + wordid);
+            var dict=Request.Form.ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var item in dict)
+            {
+                if (item.Key == "youtube")
+                    link.Url = item.Value;
+                if (item.Key == "wordtime")
+                    link.WordTime = item.Value;
+            }
+
+            _context.YoutubeLinks.Update(link);
+            _context.SaveChanges();
+
+            return Redirect("/Home/EditWord/" + wordid);
         }
     }
 }

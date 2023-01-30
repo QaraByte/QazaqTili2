@@ -1,8 +1,24 @@
 ﻿
 
 <div>
-    <p>Id: @Model.Id Слово: <span class="word-edit">@Model.Name</span></p>
-    <p>Время создания: @Model.CreateTime</p>
+    <table class="table-word">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Слово</th>
+                <th>Время создания</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Id</td>
+                <td>@Model.Name</td>
+                <td>@Model.CreateTime</td>
+            </tr>
+        </tbody>
+    </table>
+   @* <p>Id: @Model.Id Слово: <span class="word-edit">@Model.Name</span></p>
+    <p>Время создания: @Model.CreateTime</p>*@
 
     @foreach (var item in ViewBag.YLinks)
     {
@@ -40,7 +56,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Ссылка на Ютуб</span>
                         </div>
-                        <input type="text" class="form-control" id="edit-link-modal" name="youtube" aria-label="youtube-url" aria-describedby="edit-link-modal">
+                        <input type="text" class="form-control" id="edit-link-modal" onchange="changeLink()" name="youtube" aria-label="youtube-url" aria-describedby="edit-link-modal">
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">

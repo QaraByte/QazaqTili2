@@ -20,9 +20,34 @@ $(document).ready(function () {
     $(".edit-link").click(function () {
         let id = $(this).data('id');
         let href = $('.edit-links a.video-link').attr('href');
+
+        let href_split = href.split('?');
+        if (href_split.length > 1 && href_split[1][0]=='t') {
+            let sec = href_split[1].split('=')[1];
+            let t = sec / 60;
+            $('#edit-time-modal').val(t);
+        }
+
         $('#edit-link-modal').val(href);
         //$('#editModal')
+        let yId = $(this).data('id');
+        let action = $('#frmWord').attr('action');
+        $('#frmWord').attr('action', action + '/' + yId);
     });
 
 });
+
+function changeLink() {
+    let link = $('#edit-link-modal').val();
+    let link_split = link.split('?');
+    if (link_split.length > 0 && link_split[1][0] == 't') {
+        let sec = link_split[1].split('=')[1];
+        let t = sec / 60;
+        let min = (t - t % 1);
+        let sec1 = sec - min * 60;
+
+        $('#edit-time-modal').val(min + ':' + sec1);
+
+    }
+}
 
