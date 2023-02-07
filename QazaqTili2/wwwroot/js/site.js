@@ -40,13 +40,29 @@ $(document).ready(function () {
 function changeLink() {
     let link = $('#edit-link-modal').val();
     let link_split = link.split('?');
-    if (link_split.length > 0 && link_split[1][0] == 't') {
+    if (link_split.length > 1 && link_split[1][0] == 't') {
         let sec = link_split[1].split('=')[1];
         let t = sec / 60;
-        let min = (t - t % 1);
-        let sec1 = sec - min * 60;
+        let hour = 0;
+        let min = 0;
+        let sec1 = 0;
+        if (t > 60) {
+            hour = Math.trunc(t / 60);
+            min = Math.trunc(t - hour * 60);
+            sec1 = sec - (hour * 3600 + min * 60);
+        }
+        else {
+            min = (t - t % 1);
+            sec1 = sec - min * 60;
+        }
+        
+        if (sec1.toString().length == 1)
+            sec1 = '0' + sec1;
 
-        $('#edit-time-modal').val(min + ':' + sec1);
+        if (t > 60)
+            $('#edit-time-modal').val(hour + ':' + min + ':' + sec1);
+        else
+            $('#edit-time-modal').val(min + ':' + sec1);
 
     }
 }

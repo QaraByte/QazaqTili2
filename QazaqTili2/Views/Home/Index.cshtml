@@ -1,4 +1,4 @@
-﻿@model List<Word>
+﻿@model List<MainIndex>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -18,6 +18,7 @@
             <th>Время создания</th>
             <th>Тип слова</th>
             <th></th>
+            <th>Количество ссылок</th>
         </tr>
     </thead>
     <tbody>
@@ -29,8 +30,9 @@
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.CreateTime</td>
-                    <td>@item.WordTypeId - @item.WordTypes?.Name</td>
+                    <td>@item.WordTypeId </td>@*- @item.WordTypes?.Name*@
                     <td><a href="/Home/EditWord/@item.Id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                    <td>@item.Count</td>
                 </tr>
             }
         }

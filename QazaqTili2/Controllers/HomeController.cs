@@ -18,13 +18,22 @@ namespace QazaqTili2.Controllers
 
         public IActionResult Index()
         {
-            //using (ApplicationContext db = new ApplicationContext())
-            //{
-            var words = _context.Words
-            .Include(w => w.WordTypes)
-            .Include(wt => wt.YoutubeLinks)
-            //=> new {}
-            .ToList();
+            var words = (from w in _context.Words
+                        from y in _context.YoutubeLinks.Where(x => x.WordId == w.Id).DefaultIfEmpty()
+                        group w by new { w.Id, w.Name, w.CreateTime, w.WordTypeId } into g
+                        select new MainIndex
+                        {
+                            Id=g.Key.Id,
+                            Name=g.Key.Name,
+                            CreateTime=g.Key.CreateTime,
+                            WordTypeId=g.Key.WordTypeId,
+                            Count=g.Count()
+                        }).ToList();
+
+            //var words = _context.Words
+            //.Include(w => w.WordTypes)
+            //.Include(wt => wt.YoutubeLinks)
+            //.ToList();
 
             ViewBag.WordsCount = words.Count;
 
@@ -93,10 +102,22 @@ namespace QazaqTili2.Controllers
         [HttpPost]
         public IActionResult EditYoutubeLink(int id)
         {
-            var link = _context.YoutubeLinks.Find(id);
-            int wordid = link.WordId;
+            YoutubeLinks link = null;
+            int wordid = 0;
+            if (id == 0)
+            {
+                link = new YoutubeLinks();
+                var valueWordId = Request.Form.ToDictionary(x => x.Key, x => x.Value).ToList().Find(w => w.Key == "wordid");
+                wordid = int.Parse(valueWordId.Value);
+                link.WordId = wordid;
+            }
+            else
+            {
+                link = _context.YoutubeLinks.Find(id);
+                wordid = link.WordId;
+            }
 
-            var dict=Request.Form.ToDictionary(x => x.Key, x => x.Value);
+            var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value);
 
             foreach (var item in dict)
             {
@@ -104,9 +125,16 @@ namespace QazaqTili2.Controllers
                     link.Url = item.Value;
                 if (item.Key == "wordtime")
                     link.WordTime = item.Value;
+                if (item.Key == "name" && !string.IsNullOrEmpty(item.Value))
+                    link.Name = item.Value;
             }
 
-            _context.YoutubeLinks.Update(link);
+            if (id == 0)
+            {
+                _context.YoutubeLinks.Add(link);
+            }
+            else
+                _context.YoutubeLinks.Update(link);
             _context.SaveChanges();
 
             return Redirect("/Home/EditWord/" + wordid);

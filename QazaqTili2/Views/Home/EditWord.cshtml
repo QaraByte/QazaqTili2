@@ -20,6 +20,12 @@
    @* <p>Id: @Model.Id Слово: <span class="word-edit">@Model.Name</span></p>
     <p>Время создания: @Model.CreateTime</p>*@
 
+    <br />
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+    Добавить ссылку на Ютуб
+</button>
+
     @foreach (var item in ViewBag.YLinks)
     {
         @*        <!-- Button trigger modal -->
@@ -28,6 +34,7 @@
     </button>*@
 
         <p class="edit-links">
+            Название: <span>@item.Name</span>
             Ссылка:
             <a href="@item.Url" class="video-link" target="_blank">@item.Url</a>
             <span>Время: @item.WordTime</span>
@@ -52,6 +59,18 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3" style="display:none;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Id слова</span>
+                        </div>
+                        <input type="text" class="form-control" id="wordid-modal" name="wordid" value="@Model.Id" aria-label="word-id" aria-describedby="wordid">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название видео/файла</span>
+                        </div>
+                        <input type="text" class="form-control" id="name-modal" name="name" value="" aria-label="word-name" aria-describedby="wordname">
+                    </div>
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Ссылка на Ютуб</span>

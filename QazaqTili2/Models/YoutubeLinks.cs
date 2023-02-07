@@ -12,6 +12,7 @@ namespace QazaqTili2.Models
         public int WordId { get; set; }
         public DateTime CreateTime { get; set; }
         public Word? Words { get; set; }
-        public string WordTime { get; set; }
+        public string? WordTime { get; set; }
+        public string? Name { get; set; }
     }
 }
