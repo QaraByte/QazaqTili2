@@ -28,6 +28,11 @@ $(document).ready(function () {
             $('#edit-time-modal').val(t);
         }
 
+        let title = $('.title').text();
+        if (title) {
+            $('#name-modal').val(title);
+        }
+        
         $('#edit-link-modal').val(href);
         //$('#editModal')
         let yId = $(this).data('id');
