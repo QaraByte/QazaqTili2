@@ -5,30 +5,23 @@
 
 $(document).ready(function () {
 
-    //$('#exampleModal').modal(options);
-
-    //$('#exampleModal').on('show.bs.modal', function (event) {
-    //    var button = $(event.relatedTarget) // Button that triggered the modal
-    //    var recipient = button.data('whatever') // Extract info from data-* attributes
-    //    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    //    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    //    var modal = $(this)
-    //    modal.find('.modal-title').text('New message to ' + recipient)
-    //    modal.find('.modal-body input').val(recipient)
-    //})
-
     $(".edit-link").click(function () {
-        let id = $(this).data('id');
+        //let id = $(this).data('id');
         let href = $('.edit-links a.video-link').attr('href');
 
-        let href_split = href.split('?');
-        if (href_split.length > 1 && href_split[1][0]=='t') {
-            let sec = href_split[1].split('=')[1];
-            let t = sec / 60;
-            $('#edit-time-modal').val(t);
+        let time = GetUnderstandableTime(href);
+        if (time) {
+            $('#edit-time-modal').val(time);
         }
 
-        let title = $('.title').text();
+        //let href_split = href.split('?');
+        //if (href_split.length > 1 && href_split[1][0]=='t') {
+        //    let sec = href_split[1].split('=')[1];
+        //    let t = sec / 60;
+        //    $('#edit-time-modal').val(t);
+        //}
+
+        let title = $(this).parent().find('span').first().text();
         if (title) {
             $('#name-modal').val(title);
         }
@@ -44,6 +37,42 @@ $(document).ready(function () {
 
 function changeLink() {
     let link = $('#edit-link-modal').val();
+
+    let time = GetUnderstandableTime(link);
+    if (time) {
+        $('#edit-time-modal').val(time);
+    }
+    
+
+    //let link_split = link.split('?');
+    //if (link_split.length > 1 && link_split[1][0] == 't') {
+    //    let sec = link_split[1].split('=')[1];
+    //    let t = sec / 60;
+    //    let hour = 0;
+    //    let min = 0;
+    //    let sec1 = 0;
+    //    if (t > 60) {
+    //        hour = Math.trunc(t / 60);
+    //        min = Math.trunc(t - hour * 60);
+    //        sec1 = sec - (hour * 3600 + min * 60);
+    //    }
+    //    else {
+    //        min = (t - t % 1);
+    //        sec1 = sec - min * 60;
+    //    }
+        
+    //    if (sec1.toString().length == 1)
+    //        sec1 = '0' + sec1;
+
+    //    if (t > 60)
+    //        $('#edit-time-modal').val(hour + ':' + min + ':' + sec1);
+    //    else
+    //        $('#edit-time-modal').val(min + ':' + sec1);
+
+    //}
+}
+
+function GetUnderstandableTime(link) {
     let link_split = link.split('?');
     if (link_split.length > 1 && link_split[1][0] == 't') {
         let sec = link_split[1].split('=')[1];
@@ -60,15 +89,15 @@ function changeLink() {
             min = (t - t % 1);
             sec1 = sec - min * 60;
         }
-        
+
         if (sec1.toString().length == 1)
             sec1 = '0' + sec1;
 
         if (t > 60)
-            $('#edit-time-modal').val(hour + ':' + min + ':' + sec1);
+            return hour + ':' + min + ':' + sec1;
         else
-            $('#edit-time-modal').val(min + ':' + sec1);
-
+            return min + ':' + sec1;
     }
+    return '';
 }
 
