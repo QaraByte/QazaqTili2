@@ -33,6 +33,11 @@ $(document).ready(function () {
         $('#frmWord').attr('action', action + '/' + yId);
     });
 
+
+    const input = document.querySelector('#search-word');
+    //const log = document.getElementById('log');
+
+    input.addEventListener('change', SearchWord);
 });
 
 function changeLink() {
@@ -99,5 +104,10 @@ function GetUnderstandableTime(link) {
             return min + ':' + sec1;
     }
     return '';
+}
+
+function SearchWord(e) {
+    //log.textContent = e.target.value;
+    console.log(e.target.value);
 }
 
