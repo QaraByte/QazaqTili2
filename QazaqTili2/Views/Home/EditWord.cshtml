@@ -7,13 +7,19 @@
                 <th>Id</th>
                 <th>Слово</th>
                 <th>Время создания</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>@Model.Id</td>
-                <td>@Model.Name</td>
-                <td>@Model.CreateTime</td>
+                <td class="word-name">@Model.Name</td>
+                <td class="createtime">@Model.CreateTime</td>
+                <td>
+                    <a href="/Home/EditWordName" class="edit-word" data-id="@Model.Id" data-bs-toggle="modal" data-bs-target="#editWordNameModal">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -28,11 +34,6 @@
 
     @foreach (var item in ViewBag.YLinks)
     {
-        @*        <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-    Добавить новое слово
-    </button>*@
-
         <p class="edit-links">
             Название: <span class="title">@item.Name</span>
             <br>
@@ -46,11 +47,11 @@
     }
 </div>
 
-<!-- The Modal -->
+<!-- The Modal Youtube Link -->
 <div class="modal" id="editModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/Home/EditYoutubeLink" class="form-horizontal" role="form" method="post" id="frmWord">
+            <form action="/Home/EditYoutubeLink" class="form-horizontal" role="form" method="post" id="frmLink">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
@@ -91,6 +92,48 @@
                 <!-- Modal footer -->
                 <div class="modal-footer">
                     @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal Edit Word Name -->
+<div class="modal" id="editWordNameModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Home/EditWordName" class="form-horizontal" role="form" method="post" id="frmWord">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактирование слова</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3" style="display:none;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Id</span>
+                        </div>
+                        <input type="text" class="form-control" id="id" name="id" value="@Model.Id" aria-label="word-name" aria-describedby="wordname">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Слово</span>
+                        </div>
+                        <input type="text" class="form-control" id="name" name="name" value="" aria-label="word-name" aria-describedby="wordname">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Время создания</span>
+                        </div>
+                        <input type="text" class="form-control" id="createtime" readonly name="createtime" aria-label="word-createtime" aria-describedby="word-createtime-modal">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>

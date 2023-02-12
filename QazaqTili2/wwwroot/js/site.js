@@ -33,11 +33,18 @@ $(document).ready(function () {
         $('#frmWord').attr('action', action + '/' + yId);
     });
 
+    $('.edit-word').click(function () {
+        let word = $('.word-name').text();
+        $('#name').val(word);
+        let createTime = $('.createtime').text();
+        $('#createtime').val(createTime);
+    })
 
     const input = document.querySelector('#search-word');
     //const log = document.getElementById('log');
 
-    input.addEventListener('change', SearchWord);
+    if (input != null)
+        input.addEventListener('change', SearchWord);
 });
 
 function changeLink() {

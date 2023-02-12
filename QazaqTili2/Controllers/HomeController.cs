@@ -139,5 +139,21 @@ namespace QazaqTili2.Controllers
 
             return Redirect("/Home/EditWord/" + wordid);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditWordName([FromForm] Word word)
+        {
+            //var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value);
+
+            //_context.Words.Update(word);
+
+            _context.Attach(word);
+            var entry = _context.Entry(word);
+            entry.State = EntityState.Modified;
+            entry.Property(e => e.CreateTime).IsModified = false;
+            await _context.SaveChangesAsync();
+
+            return Redirect("/Home/EditWord/" + word.Id);
+        }
     }
 }
