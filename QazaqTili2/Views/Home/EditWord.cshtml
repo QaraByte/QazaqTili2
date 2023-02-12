@@ -105,9 +105,11 @@
 <div class="modal" id="editWordNameModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/Home/EditWordName" class="form-horizontal" role="form" method="post" id="frmWord">
-
-                <div class="modal-header">
+            @using (Html.BeginForm("EditWordName", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="modal-header">
                     <h4 class="modal-title">Редактирование слова</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
@@ -137,7 +139,16 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
-            </form>
+}
+           @* <form action="/Home/EditWordName" class="form-horizontal" role="form" method="post" id="frmWord">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактирование слова</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                
+            </form>*@
 
         </div>
     </div>

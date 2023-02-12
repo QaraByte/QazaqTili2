@@ -141,6 +141,7 @@ namespace QazaqTili2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditWordName([FromForm] Word word)
         {
             //var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value);
