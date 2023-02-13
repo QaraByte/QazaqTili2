@@ -29,8 +29,8 @@ $(document).ready(function () {
         $('#edit-link-modal').val(href);
         //$('#editModal')
         let yId = $(this).data('id');
-        let action = $('#frmWord').attr('action');
-        $('#frmWord').attr('action', action + '/' + yId);
+        let action = $('#frmLink').attr('action');
+        $('#frmLink').attr('action', action + '/' + yId);
     });
 
     $('.edit-word').click(function () {
@@ -38,6 +38,38 @@ $(document).ready(function () {
         $('#name').val(word);
         let createTime = $('.createtime').text();
         $('#createtime').val(createTime);
+    })
+
+    $('.remove-link').click(function () {
+        let id = $(this).data('id');
+        $(this).parent().find('a').removeClass('selected-remove');
+        $(this).addClass('selected-remove');
+
+        Swal.fire({
+            title: 'Вы точно хотите удалить ссылку? <br><span class="sure-remove-link">' + $(this).parent().find('.video-link').attr('href') + '</span>',
+            //showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Удалить',
+            denyButtonText: `Отмена`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                //Swal.fire('Ссылка удалена!', '', 'success')
+                let id = $('.selected-remove').data('id');
+                var posting = $.post('/Home/RemoveLink', { 'id': id });
+                posting.done(function (data) {
+                    console.log(data);
+                })
+                    .fail(function (data) {
+                        if (data.status == 400) {
+                            Swal.fire('Неверный запрос!', '', 'warning')
+                        }
+                        else {
+                            Swal.fire('Ошибка удаления!', '', 'error')
+                        }
+                    });
+            }
+        })
     })
 
     const input = document.querySelector('#search-word');

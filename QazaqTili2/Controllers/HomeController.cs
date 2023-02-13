@@ -156,5 +156,17 @@ namespace QazaqTili2.Controllers
 
             return Redirect("/Home/EditWord/" + word.Id);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveLink(int id)
+        {
+            var link = _context.YoutubeLinks.Find(id);
+            if (link == null)
+                return StatusCode(400);
+            _context.Remove(link);
+            await _context.SaveChangesAsync();
+            int wordId = link.WordId;
+            return Redirect("/Home/EditWord/" + wordId);
+        }
     }
 }

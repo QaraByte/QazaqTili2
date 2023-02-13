@@ -54,3 +54,11 @@ body {
 .link-count{
     text-align:center;
 }
+
+.remove-link{
+    color:red;
+}
+
+.sure-remove-link{
+    font-size:14px;
+}

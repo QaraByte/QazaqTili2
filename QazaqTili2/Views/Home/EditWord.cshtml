@@ -38,10 +38,13 @@
             Название: <span class="title">@item.Name</span>
             <br>
             Ссылка:
-            <a href="@item.Url" class="video-link" target="_blank">@item.Url</a>
+            <a href="@item.Url" class="video-link" data-id="@item.Id" target="_blank">@item.Url</a>
             <span>Время: @item.WordTime</span>
             <a href="/Home/EditYouLink/@item.Id" class="edit-link" data-id="@item.Id" data-bs-toggle="modal" data-bs-target="#editModal">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </a>
+            <a href="#" data-id="@item.Id" class="remove-link">
+                <i class="fa fa-remove" aria-hidden="true"></i>
             </a>
         </p>
     }
