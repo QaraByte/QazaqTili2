@@ -1,0 +1,30 @@
+﻿
+<table class="words">
+    <caption>Всего слов: @ViewBag.WordsCount</caption>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Наименование</th>
+            <th>Время создания</th>
+            <th>Тип слова</th>
+            <th></th>
+            <th>Количество ссылок</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.CreateTime</td>
+                    <td>@item.WordTypeId </td>@*- @item.WordTypes?.Name*@
+                    <td><a href="/Home/EditWord/@item.Id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                    <td class="link-count">@item.Count</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

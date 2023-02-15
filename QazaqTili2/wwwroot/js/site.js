@@ -148,5 +148,13 @@ function GetUnderstandableTime(link) {
 function SearchWord(e) {
     //log.textContent = e.target.value;
     console.log(e.target.value);
+
+    $.ajax({
+        url: "Home/SearchWord",
+        data: { word: e.target.value }
+    })
+        .done(function (msg) {
+            alert("Data Saved: " + msg);
+        });
 }
 
