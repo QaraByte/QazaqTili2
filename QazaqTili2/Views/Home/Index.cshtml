@@ -12,7 +12,9 @@
 <input type="text" class="form-control" id="search-word">
 
 @*@Html.Partial("_tableWords");*@
-@await Html.PartialAsync("_tableWords", Model)
+<div id="table-words">
+    @await Html.PartialAsync("_tableWords", Model)
+</div>
 
 
 <!-- The Modal -->

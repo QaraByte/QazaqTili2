@@ -154,7 +154,11 @@ function SearchWord(e) {
         data: { word: e.target.value }
     })
         .done(function (msg) {
-            alert("Data Saved: " + msg);
+            $('#table-words').empty();
+            $('#table-words').html(msg);
+        })
+        .fail(function (msg) {
+            console.log(msg.responseText);
         });
 }
 

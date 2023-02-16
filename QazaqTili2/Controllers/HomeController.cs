@@ -172,9 +172,13 @@ namespace QazaqTili2.Controllers
         public IActionResult SearchWord(string word)
         {
             //Wo
-            var result = _context.Words.Where(x => x.Name.StartsWith(word)).ToList();
-            List<MainIndex> main = new List<MainIndex>();
+            var result = _context.Words.Where(x => x.Name.StartsWith(word)).Select(y=>new MainIndex { Id=y.Id, Name=y.Name, CreateTime=y.CreateTime}).ToList();
+
+            //List<MainIndex> main = new List<MainIndex>();
             //main.Add(new MainIndex { Id=1, Name = result[0] })
+
+            ViewBag.WordsCount = result.Count;
+
             return PartialView("_tableWords", result);
         }
     }
