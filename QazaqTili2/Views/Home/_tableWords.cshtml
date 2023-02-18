@@ -1,4 +1,5 @@
-﻿
+﻿@model List<MainIndex>
+
 <table class="words">
     <caption>Всего слов: @ViewBag.WordsCount</caption>
     <thead>
@@ -20,7 +21,22 @@
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.CreateTime</td>
-                    <td>@item.WordTypeId </td>@*- @item.WordTypes?.Name*@
+                    @if(item.WordTypeName?.Length>10)
+                    {
+                        int l = item.WordTypeName.Length;
+                        if(l>17)
+                        {
+                            <td>@item.WordTypeId - @item.WordTypeName.Substring(0,17)...</td>
+                        }
+                        else
+                        {
+                            <td>@item.WordTypeId - @item.WordTypeName.Substring(0,l)</td>
+                        }
+                    }
+                    else
+                    {
+                        <td>@item.WordTypeId - @item.WordTypeName</td>
+                    }
                     <td><a href="/Home/EditWord/@item.Id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
                     <td class="link-count">@item.Count</td>
                 </tr>

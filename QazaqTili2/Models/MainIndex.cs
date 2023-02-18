@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public DateTime? CreateTime { get; set; }
         public int? WordTypeId { get; set; }
+        public string WordTypeName { get; set; }
         public int Count { get; set; }
     }
 }

@@ -19,21 +19,18 @@ namespace QazaqTili2.Controllers
         public IActionResult Index()
         {
             var words = (from w in _context.Words
-                        from y in _context.YoutubeLinks.Where(x => x.WordId == w.Id).DefaultIfEmpty()
-                        group w by new { w.Id, w.Name, w.CreateTime, w.WordTypeId } into g
-                        select new MainIndex
-                        {
-                            Id=g.Key.Id,
-                            Name=g.Key.Name,
-                            CreateTime=g.Key.CreateTime,
-                            WordTypeId=g.Key.WordTypeId,
-                            Count=g.Count()
-                        }).ToList();
-
-            //var words = _context.Words
-            //.Include(w => w.WordTypes)
-            //.Include(wt => wt.YoutubeLinks)
-            //.ToList();
+                         from y in _context.YoutubeLinks.Where(x => x.WordId == w.Id).DefaultIfEmpty()
+                         from t in _context.WordTypes.Where(y => y.Id == w.WordTypeId).DefaultIfEmpty()
+                         group w by new NewRecord(w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name) into g
+                         select new MainIndex
+                         {
+                             Id = g.Key.Id,
+                             Name = g.Key.Name,
+                             CreateTime = g.Key.CreateTime,
+                             WordTypeId = g.Key.WordTypeId,
+                             WordTypeName = g.Key.WordTypeName,
+                             Count = g.Count()
+                         }).ToList();
 
             ViewBag.WordsCount = words.Count;
 
@@ -182,4 +179,6 @@ namespace QazaqTili2.Controllers
             return PartialView("_tableWords", result);
         }
     }
+
+    internal record NewRecord(int Id, string Name, DateTime? CreateTime, int? WordTypeId, string WordTypeName);
 }

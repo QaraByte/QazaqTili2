@@ -1,7 +1,15 @@
 ﻿
 
 <div>
-    <table class="table-word">
+    <p>Id: <span>@Model.Id</span></p>
+    <p>Слово: <span class="word-name">@Model.Name</span></p>
+    <p>Время создания: <span class="createtime">@Model.CreateTime</span></p>
+    <p>
+        <a href="/Home/EditWordName" class="edit-word" data-id="@Model.Id" data-bs-toggle="modal" data-bs-target="#editWordNameModal">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+    </p>
+   @* <table class="table-word">
         <thead>
             <tr>
                 <th>Id</th>
@@ -12,9 +20,9 @@
         </thead>
         <tbody>
             <tr>
-                <td>@Model.Id</td>
-                <td class="word-name">@Model.Name</td>
-                <td class="createtime">@Model.CreateTime</td>
+                <td></td>
+                <td class="word-name"></td>
+                <td class="createtime"></td>
                 <td>
                     <a href="/Home/EditWordName" class="edit-word" data-id="@Model.Id" data-bs-toggle="modal" data-bs-target="#editWordNameModal">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -22,7 +30,7 @@
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table>*@
    @* <p>Id: @Model.Id Слово: <span class="word-edit">@Model.Name</span></p>
     <p>Время создания: @Model.CreateTime</p>*@
 
