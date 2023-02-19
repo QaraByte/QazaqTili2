@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using QazaqTili2.Models;
 using System.Diagnostics;
@@ -18,31 +19,91 @@ namespace QazaqTili2.Controllers
 
         public IActionResult Index()
         {
-            var words = (from w in _context.Words
-                         from y in _context.YoutubeLinks.Where(x => x.WordId == w.Id).DefaultIfEmpty()
-                         from t in _context.WordTypes.Where(y => y.Id == w.WordTypeId).DefaultIfEmpty()
-                         group w by new NewRecord(w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name) into g
-                         select new MainIndex
-                         {
-                             Id = g.Key.Id,
-                             Name = g.Key.Name,
-                             CreateTime = g.Key.CreateTime,
-                             WordTypeId = g.Key.WordTypeId,
-                             WordTypeName = g.Key.WordTypeName,
-                             Count = g.Count()
-                         }).ToList();
+            var words = SelectPage();
 
-            ViewBag.WordsCount = words.Count;
+            return View(words);
+        }
 
-            //words[0].YoutubeLink
+        public List<MainIndex> SelectPage(int page = 1)
+        {
+            string range = $"{page * 20 - 19} and {page * 20}";
+
+            var words = _context.Set<MainIndex>().
+                                FromSqlRaw($@" with a as (
+                                                 select top {page * 20} row_number() over (order by w.Name) as Row, isnull(w.Id,0) as Id, isnull(w.Name,'name') as Name
+                                                , isnull(w.CreateTime, CONVERT(DATETIME2, '1970-01-01 0:00:00', 23)) as CreateTime
+                                                , isnull(w.WordTypeId,0) as WordTypeId, isnull(t.Name,'-') as WordTypeName, count(y.Id) as Count
+                                                    from Words w
+                                                    left join WordTypes t on w.WordTypeId=t.Id
+                                                    left join YoutubeLinks y on w.Id=y.WordId
+                                                    group by w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name
+                                                    order by w.Name
+                                                     )
+                                                    select * from a
+                                                    where a.row between {range}
+                                                    order by a.Name
+                                                    --new SqlParameter('@page', page*20)
+                                                    ")
+                                .ToList()
+                                .Select(x => new MainIndex
+                                {
+                                    Row = x.Row,
+                                    Id = x.Id,
+                                    Name = x.Name,
+                                    CreateTime = x.CreateTime,// != null ? DateTime.SpecifyKind(x.CreateTime.Value, DateTimeKind.Utc) : (DateTime?)null,
+                                    WordTypeId = x.WordTypeId,// != null ? x.WordTypeId : 0,
+                                    WordTypeName = x.WordTypeName,
+                                    Count = x.Count
+                                })
+                                .ToList();
+
+            //var words = _context.Database.SqlQuery<MainIndex>($@"with a as (
+            //                                        select top {page * 20} row_number() over (order by w.id) as Row, w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name as WordTypeName, count(y.Id) as Count
+            //                                        from Words w
+            //                                        left join WordTypes t on w.WordTypeId=t.Id
+            //                                        left join YoutubeLinks y on w.Id=y.WordId
+            //                                        group by w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name
+            //                                        order by w.Name)
+            //                                        select * from a
+            //                                        where a.Row between {range}
+            //                                        order by a.Name").ToList();
+
+            //var words = (from w in _context.Words
+            //             from y in _context.YoutubeLinks.Where(x => x.WordId == w.Id).DefaultIfEmpty()
+            //             from t in _context.WordTypes.Where(y => y.Id == w.WordTypeId).DefaultIfEmpty()
+            //             .Where(x=>x.)
+            //             group w by new NewRecord(w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name) into g
+            //             select new MainIndex
+            //             {
+            //                 Id = g.Key.Id,
+            //                 Name = g.Key.Name,
+            //                 CreateTime = g.Key.CreateTime,
+            //                 WordTypeId = g.Key.WordTypeId,
+            //                 WordTypeName = g.Key.WordTypeName,
+            //                 Count = g.Count()
+            //             })
+            //             //.Take(current)
+            //             .ToList();
+
+            ViewBag.SelectedPage = page;
+
+            int wordsCount = _context.Words.Count();
+
+            ViewBag.WordsCount = wordsCount;
+            ViewBag.PagesCount = wordsCount / 20;
 
             var wordTypes = _context.WordTypes.ToList();
             ViewBag.WordTypes = wordTypes;
-            //_context.Words.Add(word);
-            //_context.SaveChanges();
-            //}
 
-            return View(words);
+            //return PartialView("_tableWords", words);
+            return words;
+        }
+
+        public IActionResult SelectPageAjax(int page = 1)
+        {
+            var words= SelectPage(page);
+
+            return PartialView("_tableWords", words);
         }
 
         public IActionResult Privacy()

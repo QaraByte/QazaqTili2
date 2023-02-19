@@ -62,3 +62,19 @@ body {
 .sure-remove-link{
     font-size:14px;
 }
+
+.page {
+    margin: 5px 10px 5px 10px;
+    border: 1px solid #5cada2;
+    padding: 5px;
+    cursor:pointer;
+}
+
+.page:hover{
+    background-color:cornsilk;
+    font-weight:bold;
+}
+
+.selected-page {
+    background-color: #e3e57a;
+}

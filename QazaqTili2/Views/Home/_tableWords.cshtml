@@ -44,3 +44,20 @@
         }
     </tbody>
 </table>
+@{
+    int p = 0;
+}
+
+<div style="display:inline-flex;">
+@for(var i = 1; i < ViewBag.PagesCount; i++)
+    {
+        if (i == ViewBag.SelectedPage)
+        {
+            <div class="page selected-page" data-page-number="@i">@i</div>
+        }
+        else
+        {
+            <div class="page" data-page-number="@i">@i</div>
+        }
+    }
+</div>

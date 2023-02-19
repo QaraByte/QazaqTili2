@@ -72,6 +72,11 @@ $(document).ready(function () {
         })
     })
 
+    $(".page").click(function () {
+
+        SelectPage($(this));
+    });
+
     const input = document.querySelector('#search-word');
     //const log = document.getElementById('log');
 
@@ -156,6 +161,26 @@ function SearchWord(e) {
         .done(function (msg) {
             $('#table-words').empty();
             $('#table-words').html(msg);
+        })
+        .fail(function (msg) {
+            console.log(msg.responseText);
+        });
+}
+
+function SelectPage(page) {
+
+    let pageN = $(page).data('page-number');
+
+    $.ajax({
+        url: "Home/SelectPageAjax",
+        data: { page: pageN }
+    })
+        .done(function (msg) {
+            $('#table-words').empty();
+            $('#table-words').html(msg);
+            $(".page").click(function () {
+                SelectPage($(this));
+            });
         })
         .fail(function (msg) {
             console.log(msg.responseText);

@@ -29,6 +29,9 @@ namespace QazaqTili2
                 .HasOne(w => w.Words)
                 .WithMany(wt => wt.YoutubeLinks)
                 .HasForeignKey(w => w.WordId);
+
+            modelBuilder.Entity<MainIndex>().Property(p => p.Id)
+            .HasColumnType("int");
         }
 
         public DbSet<Word> Words => Set<Word>();
