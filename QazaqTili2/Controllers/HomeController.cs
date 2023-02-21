@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using QazaqTili2.Models;
 using System.Diagnostics;
+using System.Text;
 
 namespace QazaqTili2.Controllers
 {
@@ -57,34 +59,6 @@ namespace QazaqTili2.Controllers
                                 })
                                 .ToList();
 
-            //var words = _context.Database.SqlQuery<MainIndex>($@"with a as (
-            //                                        select top {page * 20} row_number() over (order by w.id) as Row, w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name as WordTypeName, count(y.Id) as Count
-            //                                        from Words w
-            //                                        left join WordTypes t on w.WordTypeId=t.Id
-            //                                        left join YoutubeLinks y on w.Id=y.WordId
-            //                                        group by w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name
-            //                                        order by w.Name)
-            //                                        select * from a
-            //                                        where a.Row between {range}
-            //                                        order by a.Name").ToList();
-
-            //var words = (from w in _context.Words
-            //             from y in _context.YoutubeLinks.Where(x => x.WordId == w.Id).DefaultIfEmpty()
-            //             from t in _context.WordTypes.Where(y => y.Id == w.WordTypeId).DefaultIfEmpty()
-            //             .Where(x=>x.)
-            //             group w by new NewRecord(w.Id, w.Name, w.CreateTime, w.WordTypeId, t.Name) into g
-            //             select new MainIndex
-            //             {
-            //                 Id = g.Key.Id,
-            //                 Name = g.Key.Name,
-            //                 CreateTime = g.Key.CreateTime,
-            //                 WordTypeId = g.Key.WordTypeId,
-            //                 WordTypeName = g.Key.WordTypeName,
-            //                 Count = g.Count()
-            //             })
-            //             //.Take(current)
-            //             .ToList();
-
             ViewBag.SelectedPage = page;
 
             int wordsCount = _context.Words.Count();
@@ -101,7 +75,7 @@ namespace QazaqTili2.Controllers
 
         public IActionResult SelectPageAjax(int page = 1)
         {
-            var words= SelectPage(page);
+            var words = SelectPage(page);
 
             return PartialView("_tableWords", words);
         }
@@ -117,29 +91,66 @@ namespace QazaqTili2.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult AddWord()
+        [HttpPost]
+        public IActionResult AddWord([FromBody] WordFromModal model)
         {
-            var list = Request.Form.ToList();
+            //var list = Request.Form.ToList();
+            if (model == null)
+                return BadRequest("Заполните форму.");
+            if (model.Name == null)
+                return BadRequest("Слово не может быть пустым.");
 
-            string wordName = list.Find(x => x.Key == "word").Value.ToString();
-            int wordType = int.Parse(list.Find(x => x.Key == "word-types").Value);
-            string youtubeLinkValue = list.Find(x => x.Key == "youtube").Value.ToString();
+            WordFromModal word = new WordFromModal();
+            word.Name = model.Name;
+            word.WordTypeId = model.WordTypeId;
 
-            Word word = new Word();
-            word.Name = wordName;
-            word.CreateTime = DateTime.Now;
-            word.WordTypeId = wordType;
-            _context.Words.Add(word);
-            _context.SaveChanges();
+            if (IsWordExists(word.Name))
+            {
+                string errorMessage = "Слово \"" + word.Name + "\" уже есть в словаре.";
+                return BadRequest(errorMessage);
+                //byte[] bytes = Encoding.UTF8.GetBytes(errorMessage);
+                ////return new JsonResult(Encoding.UTF8.GetString(bytes));
+                //return new ContentResult
+                //{
+                //    ContentType = "text/plain; charset=utf-8",
+                //    Content = Encoding.UTF8.GetString(bytes)
+                //};
+            }
 
-            if(!string.IsNullOrWhiteSpace(youtubeLinkValue))
+
+            //int wordType = int.Parse(list.Find(x => x.Key == "WordTypeId").Value);
+            //string youtubeLinkValue = list.Find(x => x.Key == "Youtube").Value.ToString();
+
+            //Word word = new Word();
+            //word.Name = wordName;
+            //word.CreateTime = DateTime.Now;
+            Word word1 = new Word()
+            {
+                Name = word.Name,
+                CreateTime = DateTime.Now,
+                WordTypeId = word.WordTypeId
+            };
+            //word.WordTypeId = wordType;
+            
+            try
+            {
+                _context.Words.Add(word1);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Youtube))
             {
                 YoutubeLinks youtubeLinks = new YoutubeLinks();
-                youtubeLinks.Url = youtubeLinkValue;
-                youtubeLinks.WordId = word.Id;
-                youtubeLinks.CreateTime= DateTime.Now;
-                string wordTime = list.Find(x => x.Key == "wordtime").Value.ToString();
-                youtubeLinks.WordTime = wordTime;
+                youtubeLinks.Url = model.Youtube;
+                youtubeLinks.WordId = word1.Id;
+                youtubeLinks.CreateTime = DateTime.Now;
+                //string wordTime = list.Find(x => x.Key == "wordtime").Value.ToString();
+                //string wordTime = model.WordTime;
+                youtubeLinks.WordTime = model.WordTime;
                 _context.YoutubeLinks.Add(youtubeLinks);
                 _context.SaveChanges();
             }
@@ -230,7 +241,7 @@ namespace QazaqTili2.Controllers
         public IActionResult SearchWord(string word)
         {
             //Wo
-            var result = _context.Words.Where(x => x.Name.StartsWith(word)).Select(y=>new MainIndex { Id=y.Id, Name=y.Name, CreateTime=y.CreateTime}).ToList();
+            var result = _context.Words.Where(x => x.Name.StartsWith(word)).Select(y => new MainIndex { Id = y.Id, Name = y.Name, CreateTime = y.CreateTime }).ToList();
 
             //List<MainIndex> main = new List<MainIndex>();
             //main.Add(new MainIndex { Id=1, Name = result[0] })
@@ -238,6 +249,13 @@ namespace QazaqTili2.Controllers
             ViewBag.WordsCount = result.Count;
 
             return PartialView("_tableWords", result);
+        }
+
+        private bool IsWordExists(string word)
+        {
+            // Проверяем, есть ли слово в словаре
+            //var searchWord = _context.Words.Where(x => x.Name.ToUpper() == word.Name.ToUpper()).FirstOrDefault();
+            return _context.Words.Any(w => w.Name == word);
         }
     }
 

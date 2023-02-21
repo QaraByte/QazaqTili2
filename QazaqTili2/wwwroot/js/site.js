@@ -77,6 +77,42 @@ $(document).ready(function () {
         SelectPage($(this));
     });
 
+    $(document).on("click", "#submit-button", function (e) {
+        e.preventDefault();
+
+        /*var searchWord = $("#search-word").val();*/
+
+        var formData = $('#frmWord').serializeArray();
+        var data = {};
+        $(formData).each(function (index, obj) {
+            data[obj.name] = obj.value;
+        });
+        var jsonData = JSON.stringify(data);
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddWord",
+            data: jsonData,
+            contentType: "application/json",
+            success: function (data) {
+                /*$("#result").html(data);*/
+                //toastr.error(data);
+                location.reload();
+            }
+        })
+            .fail(function (data) {
+                //if (data.status == 400) {
+                console.log(data);
+                if (data.status == 0)
+                    toastr.error('Ошибка приложения.')
+                if (data.responseText.includes('SqlClient') || data.responseText.includes('error'))
+                    toastr.error('Ошибка сервера.')
+                else
+                    toastr.error(data.responseText);
+                //}
+            });;
+    });
+
     const input = document.querySelector('#search-word');
     //const log = document.getElementById('log');
 
@@ -155,7 +191,7 @@ function SearchWord(e) {
     console.log(e.target.value);
 
     $.ajax({
-        url: "Home/SearchWord",
+        url: "/Home/SearchWord",
         data: { word: e.target.value }
     })
         .done(function (msg) {
@@ -172,7 +208,7 @@ function SelectPage(page) {
     let pageN = $(page).data('page-number');
 
     $.ajax({
-        url: "Home/SelectPageAjax",
+        url: "/Home/SelectPageAjax",
         data: { page: pageN }
     })
         .done(function (msg) {

@@ -34,12 +34,12 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Слово</span>
                         </div>
-                        <input type="text" class="form-control" name="word" aria-label="word" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" name="Name" aria-label="word" aria-describedby="inputGroup-sizing-sm">
                         <br />
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <label for="word-types">Тип слова:</label>
-                        <select name="word-types" id="word-types">
+                        <select name="WordTypeId">
                             @foreach (var item in ViewBag.WordTypes)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -50,7 +50,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Ссылка на Ютуб</span>
                         </div>
-                        <input type="text" class="form-control" name="youtube" aria-label="youtube-url" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" name="Youtube" aria-label="youtube-url" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
@@ -66,7 +66,7 @@
                 <div class="modal-footer">
                     @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>*@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Добавить</button>
+                    <button type="submit" class="btn btn-primary" id="submit-button">Добавить</button>
                 </div>
             </form>
 
