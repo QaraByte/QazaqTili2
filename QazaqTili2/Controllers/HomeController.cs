@@ -63,8 +63,9 @@ namespace QazaqTili2.Controllers
 
             int wordsCount = _context.Words.Count();
 
-            ViewBag.WordsCount = wordsCount;
-            ViewBag.PagesCount = wordsCount / 20;
+            ViewBag.WordsCount = (double)wordsCount;
+            int v = ((double)wordsCount / 20 % 1) == 0 ? wordsCount / 20 : (wordsCount / 20) + 1;
+            ViewBag.PagesCount = v;
 
             var wordTypes = _context.WordTypes.ToList();
             ViewBag.WordTypes = wordTypes;
@@ -256,6 +257,69 @@ namespace QazaqTili2.Controllers
             // Проверяем, есть ли слово в словаре
             //var searchWord = _context.Words.Where(x => x.Name.ToUpper() == word.Name.ToUpper()).FirstOrDefault();
             return _context.Words.Any(w => w.Name == word);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile fileUpload, int recordId)
+        {
+            if (fileUpload != null && fileUpload.Length > 0)
+            {
+                var fileName = Path.GetFileName(fileUpload.FileName);
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileUpload.FileName);
+
+                string ext = Path.GetExtension(fileName);
+                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg")
+                    return BadRequest("Необходимо загружать изображения только с расширением: .png, .jpg, .jpeg. Сейчас: " + ext);
+
+                var files = HasFiles(recordId);
+
+                int numberOfFile = 1;
+                if(files.Count>0)
+                {
+                    foreach (var file in files)
+                    {
+                        if (file == files.Last())
+                        {
+                            string[] name = file.Path.Split("_");
+                            if (name.Length > 2)
+                            {
+                                //int.TryParse(name[name.Length - 1], out int n);
+                                string[] ext1 = name[name.Length - 1].Split('.');
+                                numberOfFile = numberOfFile + int.Parse(ext1[0]);
+                            }
+                        }
+                    }
+                }
+
+                var filePath = Path.Combine("uploads", $"{recordId}_{fileNameWithoutExtension}_{numberOfFile}{ext}");
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await fileUpload.CopyToAsync(stream);
+                }
+
+                var fileModel = new FileModel
+                {
+                    Name = fileName,
+                    ContentType = fileUpload.ContentType,
+                    Path = filePath,
+                    Extension = ext,
+                    WordId = recordId,
+                    UploadTime = DateTime.Now
+                };
+
+                _context.Files.Add(fileModel);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        public List<FileModel> HasFiles(int recordId)
+        {
+            return _context.Files.Where(f => f.WordId == recordId).ToList();
         }
     }
 

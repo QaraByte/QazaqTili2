@@ -37,5 +37,6 @@ namespace QazaqTili2
         public DbSet<Word> Words => Set<Word>();
         public DbSet<WordTypes> WordTypes => Set<WordTypes>();
         public DbSet<YoutubeLinks> YoutubeLinks => Set<YoutubeLinks>();
+        public DbSet<FileModel> Files { get; set; }
     }
 }
