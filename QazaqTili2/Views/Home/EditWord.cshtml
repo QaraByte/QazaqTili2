@@ -61,12 +61,13 @@
         </p>
     }
 
-    @*@foreach (var file in Model)
+    @foreach (var file in ViewBag.Files)
     {
         <div>
-            <a href="@Url.Content("~/")@file.Path" target="_blank">@file.Name</a>
+            @*<a href="@Url.Content("~/")@file.Path" target="_blank">@file.Name</a>*@
+            <img src="@Url.Content("~/")@file.Path" alt="@file.Name">
         </div>
-    }*@
+    }
 </div>
 
 <!-- The Modal Youtube Link -->

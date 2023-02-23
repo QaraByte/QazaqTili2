@@ -166,6 +166,19 @@ namespace QazaqTili2.Controllers
             var youtubeLinks = _context.YoutubeLinks.Where(x => x.WordId == id).ToList();
             ViewBag.YLinks = youtubeLinks;
 
+            var files=_context.Files.Where(x=>x.WordId==id).ToList();
+            ViewBag.Files = files;
+
+            //string directoryPath = Request.Scheme + "://" + Request.Host + "/" + files[0].Path;
+            //if (Directory.Exists(directoryPath))
+            //{
+            //    Console.WriteLine("Каталог существует");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Каталог не существует");
+            //}
+
             return View(word);
         }
 
