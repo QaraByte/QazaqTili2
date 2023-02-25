@@ -30,6 +30,14 @@ $(document).ready(function () {
         //$('#editModal')
         let yId = $(this).data('id');
         let action = $('#frmLink').attr('action');
+        let actionSplit = action.split('/');
+        if (actionSplit.length > 3) {
+            //if (isNumeric(actionSplit[3])){
+            //    actionSplit[3] = yId;
+            //}
+            actionSplit.splice(3, 1);
+            action = actionSplit.join('/');
+        }
         $('#frmLink').attr('action', action + '/' + yId);
     });
 
@@ -221,5 +229,9 @@ function SelectPage(page) {
         .fail(function (msg) {
             console.log(msg.responseText);
         });
+}
+
+function isNumeric(s) {
+    return !isNaN(s - parseFloat(s));
 }
 
