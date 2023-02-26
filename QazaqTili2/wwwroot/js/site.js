@@ -169,6 +169,20 @@ $(document).ready(function () {
 
     if (input != null)
         input.addEventListener('change', SearchWord);
+
+    $("#ParentWordId").change(function () {
+        console.log($(this).val());
+
+        $.get("/Home/GetImageInfo", { id: $(this).val()})
+            .done(function (data) {
+                if (data == 400) {
+                    $('#result-image').html('<span style="color:red;">Слово не найдено.</span>');
+                } else {
+                    $('#result-image').html('<span style="color:green;">' + data + '</span>');
+                }
+            });
+
+    });
 });
 
 function changeLink() {

@@ -368,6 +368,14 @@ namespace QazaqTili2.Controllers
             await _context.SaveChangesAsync();
             return Redirect("/Home/EditWord/" + model.WordId);
         }
+
+        public async Task<string> GetImageInfo(int id)
+        {
+            var img = await _context.Files.FirstOrDefaultAsync(x => x.WordId == id);
+            if(img==null)
+                return "400";
+            return img.Name;
+        }
     }
 
     internal record NewRecord(int Id, string Name, DateTime? CreateTime, int? WordTypeId, string WordTypeName);

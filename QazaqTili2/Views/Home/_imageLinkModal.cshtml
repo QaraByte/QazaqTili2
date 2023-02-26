@@ -17,13 +17,10 @@
                 <div class="modal-body">
                     <input type="hidden" name="WordId" value="@ViewData["wordId"]" />
                     <div class="form-group">
-                       @* @{
-                            string name = "ParentWordId";
-                            System.Diagnostics.Debug.WriteLine($"name={name}");
-                        }*@
-                        @*@Html.LabelFor(m => m.modelForDropDownWords.SelectedOption)*@
                         @Html.DropDownListFor(m => m.ParentWordId, new SelectList(@Model.Options, "Value", "Text"), "Выберите слово", new { @class = "form-control", @id = "ParentWordId" })
-                        @*@Html.DropDownList("ParentWordId", new SelectList(@Model.Options, "Value", "Text"), "Выберите слово", new { @class = "form-control", @id = "ParentWordId" })*@
+                    </div>
+                    <div id="result-image">
+
                     </div>
                 </div>
 
