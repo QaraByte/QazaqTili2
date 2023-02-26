@@ -1,0 +1,34 @@
+﻿@model Word
+
+<!-- The Modal Upload Image -->
+<div class="modal" id="uploadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            @using (Html.BeginForm("UploadFile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+               {
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Загрузка изображения</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" name="recordId" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="fileUpload">Выберите файл:</label>
+                        <input type="file" id="fileUpload" name="fileUpload" class="form-control-file" />
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Загрузить</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            }
+        
+        </div>
+    </div>
+</div>

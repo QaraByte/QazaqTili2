@@ -1,0 +1,54 @@
+﻿@model Word
+
+<!-- The Modal Youtube Link -->
+<div class="modal" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Home/EditYoutubeLink" class="form-horizontal" role="form" method="post" id="frmLink">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактирование ссылки</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3" style="display:none;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Id слова</span>
+                        </div>
+                        <input type="text" class="form-control" id="wordid-modal" name="wordid" value="@Model.Id" aria-label="word-id" aria-describedby="wordid">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название видео/файла</span>
+                        </div>
+                        <input type="text" class="form-control" id="name-modal" name="name" value="" aria-label="word-name" aria-describedby="wordname">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Ссылка на Ютуб</span>
+                        </div>
+                        <input type="text" class="form-control" id="edit-link-modal" onchange="changeLink()" name="youtube" aria-label="youtube-url" aria-describedby="edit-link-modal">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Время, когда встречается слово</span>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" id="edit-time-modal" name="wordtime" aria-label="word-time" aria-describedby="edit-time-modal">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

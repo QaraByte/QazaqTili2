@@ -1,0 +1,45 @@
+﻿@model Word
+
+<!-- The Modal Edit Word Name -->
+<div class="modal" id="editWordNameModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("EditWordName", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+    
+                <div class="modal-header">
+                    <h4 class="modal-title">Редактирование слова</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="input-group input-group-sm mb-3" style="display:none;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Id</span>
+                        </div>
+                        <input type="text" class="form-control" id="id" name="id" value="@Model.Id" aria-label="word-name" aria-describedby="wordname">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Слово</span>
+                        </div>
+                        <input type="text" class="form-control" id="name" name="name" value="" aria-label="word-name" aria-describedby="wordname">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Время создания</span>
+                        </div>
+                        <input type="text" class="form-control" id="createtime" readonly name="createtime" aria-label="word-createtime" aria-describedby="word-createtime-modal">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
