@@ -121,6 +121,49 @@ $(document).ready(function () {
             });;
     });
 
+    $(document).on("click", "#link-image", function (e) {
+        e.preventDefault();
+
+        /*var searchWord = $("#search-word").val();*/
+
+        var formData = $('#linkImageForm').serializeArray();
+        var data = {};
+        $(formData).each(function (index, obj) {
+            data[obj.name] = obj.value;
+        });
+        var jsonData = JSON.stringify(data);
+
+        //var formData = $('#linkImageForm').serialize();
+
+        let url = $('#linkImageForm').attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: jsonData,
+            headers: { "RequestVerificationToken": data.__RequestVerificationToken },
+            contentType: "application/json",
+            /*contentType: "application/x-www-form-urlencoded",*/
+            success: function (data) {
+                location.reload();
+            }
+        })
+            .fail(function (data) {
+                //if (data.status == 400) {
+                console.log(data);
+                if (data.status == 0)
+                    toastr.error('Ошибка приложения.')
+                if (data.responseText.includes('SqlClient') || data.responseText.includes('error'))
+                    toastr.error('Ошибка сервера.')
+                else if (data.status == 400) {
+                    toastr.error(data.statusText);
+                }
+                else
+                    toastr.error(data.responseText);
+                //}
+            });;
+    });
+
     const input = document.querySelector('#search-word');
     //const log = document.getElementById('log');
 

@@ -1,0 +1,39 @@
+﻿@model ModelForDropDownWords
+
+<!-- The Modal Link Image -->
+<div class="modal" id="linkImageModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            @using (Html.BeginForm("LinkImageWord", "Home", FormMethod.Post, new { id = "linkImageForm" } ))
+               {
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Указать ссылку на изображение</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" name="WordId" value="@ViewData["wordId"]" />
+                    <div class="form-group">
+                       @* @{
+                            string name = "ParentWordId";
+                            System.Diagnostics.Debug.WriteLine($"name={name}");
+                        }*@
+                        @*@Html.LabelFor(m => m.modelForDropDownWords.SelectedOption)*@
+                        @Html.DropDownListFor(m => m.ParentWordId, new SelectList(@Model.Options, "Value", "Text"), "Выберите слово", new { @class = "form-control", @id = "ParentWordId" })
+                        @*@Html.DropDownList("ParentWordId", new SelectList(@Model.Options, "Value", "Text"), "Выберите слово", new { @class = "form-control", @id = "ParentWordId" })*@
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="link-image">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            }
+         
+        </div>
+    </div>
+</div>

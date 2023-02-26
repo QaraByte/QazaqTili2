@@ -166,8 +166,11 @@ namespace QazaqTili2.Controllers
             var youtubeLinks = _context.YoutubeLinks.Where(x => x.WordId == id).ToList();
             ViewBag.YLinks = youtubeLinks;
 
-            var files=_context.Files.Where(x=>x.WordId==id).ToList();
+            var files = _context.Files.Where(x => x.WordId == id).ToList();
             ViewBag.Files = files;
+
+            var imageLinks=_context.ImageLinks.Where(x=>x.WordId==id).ToList();
+            ViewBag.ImageLinks = imageLinks;
 
             //string directoryPath = Request.Scheme + "://" + Request.Host + "/" + files[0].Path;
             //if (Directory.Exists(directoryPath))
@@ -179,7 +182,19 @@ namespace QazaqTili2.Controllers
             //    Console.WriteLine("Каталог не существует");
             //}
 
-            return View(word);
+            ViewData["wordId"] = word.Id;
+
+            ModelForDropDownWords model = new ModelForDropDownWords();
+            //model.SelectedOption = 7;
+            model.Options = _context.Words.Select(x => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).OrderBy(c => c.Text).ToList();
+
+            EditWordModel editWordModel = new EditWordModel()
+            {
+                modelForDropDownWords = model,
+                Word = word
+            };
+
+            return View(editWordModel);
         }
 
         [HttpPost]
@@ -273,6 +288,7 @@ namespace QazaqTili2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadFile(IFormFile fileUpload, int recordId)
         {
             if (fileUpload != null && fileUpload.Length > 0)
@@ -334,7 +350,31 @@ namespace QazaqTili2.Controllers
         {
             return _context.Files.Where(f => f.WordId == recordId).ToList();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LinkImageWord([FromBody] LinkImageFromModal model)
+        {
+            var word = await _context.Words.Where(x => x.Id == model.WordId).FirstOrDefaultAsync();
+
+            if (word == null)
+                return BadRequest("Слово не найдено.");
+
+            ImageLinks imageLinks = new ImageLinks();
+            imageLinks.WordId = model.WordId;
+            imageLinks.ParentWordId = model.ParentWordId;
+            imageLinks.CreateTime = DateTime.Now;
+            _context.ImageLinks.Add(imageLinks);
+            await _context.SaveChangesAsync();
+            return Redirect("/Home/EditWord/" + model.WordId);
+        }
     }
 
     internal record NewRecord(int Id, string Name, DateTime? CreateTime, int? WordTypeId, string WordTypeName);
+
+    public class EditWordModel
+    {
+        public Word Word { get; set; }
+        public ModelForDropDownWords modelForDropDownWords { get; set; }
+    }
 }
