@@ -1,0 +1,10 @@
+﻿body {
+}
+
+table.analyt-10-last td, th{
+    border:1px solid #cecece;
+}
+
+caption {
+    caption-side: top;
+}

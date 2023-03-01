@@ -1,0 +1,30 @@
+﻿@model List<Word>
+
+<table class="analyt-10-last">
+    <caption>10 последних добавленных слов</caption>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Слово</th>
+            <th>Дата и время создания</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.CreateTime</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section Styles {
+    <link href="@Url.Content("~/css/analyt.css")" rel="stylesheet" type="text/css" />
+}
+
+@*@section Scripts {*@
+    <script type="text/javascript" src="@Url.Content("~/js/analyt.js")"></script>
+@*}*@
