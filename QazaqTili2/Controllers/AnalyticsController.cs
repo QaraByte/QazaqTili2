@@ -16,6 +16,19 @@ namespace QazaqTili2.Controllers
         public IActionResult Index()
         {
             var lastWords = _context.Words.Take(10).OrderByDescending(x => x.CreateTime).ToList();
+
+            ViewBag.LastImages= _context.Files
+                                .OrderByDescending(f => f.UploadTime)
+                                .Take(5)
+                                .Select(f => new {
+                                    FileName = f.Name,
+                                    UploadTime = f.UploadTime,
+                                    WordName = _context.Words
+                                        .Where(w => w.Id == f.WordId)
+                                        .Select(w => w.Name)
+                                        .FirstOrDefault()
+                                })
+                                .ToList();
             return View(lastWords);
         }
     }

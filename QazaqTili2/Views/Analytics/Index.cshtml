@@ -1,5 +1,7 @@
 ﻿@model List<Word>
 
+    <div class="row">
+        <div class="col-md-3">
 <table class="analyt-10-last">
     <caption>10 последних добавленных слов</caption>
     <thead>
@@ -20,6 +22,32 @@
         }
     </tbody>
 </table>
+</div>
+<div class="col-md-3">
+    <table class="analyt-5-last-picture">
+    <caption>5 последних добавленных картинок</caption>
+    <thead>
+        <tr>
+            @*<th>ID</th>*@
+            <th>Наименование картинки</th>
+            <th>Дата и время загрузки</th>
+            <th>Слово</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.LastImages)
+        {
+            <tr>
+            @*<td>@item.Id</td>*@
+            <td>@item.FileName</td>
+            <td>@item.UploadTime</td>
+            <td>@item.WordName</td>
+        </tr>
+        }
+    </tbody>
+</table>
+</div>
+</div>
 
 @section Styles {
     <link href="@Url.Content("~/css/analyt.css")" rel="stylesheet" type="text/css" />

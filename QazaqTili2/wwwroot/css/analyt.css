@@ -8,3 +8,7 @@ table.analyt-10-last td, th{
 caption {
     caption-side: top;
 }
+
+table.analyt-5-last-picture td, th {
+    border: 1px solid #cecece;
+}
