@@ -9,6 +9,7 @@ namespace QazaqTili2.Models
         [Key, Column(Order = 0)]
         public int Id { get; set; }
         public int ParentWordId { get; set; }
+        public string ParentWord { get; set; }
         public int WordId { get; set; }
         public DateTime CreateTime { get; set; }
     }

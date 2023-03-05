@@ -53,7 +53,7 @@
     @foreach(var item in ViewBag.ImageLinks)
     {
         <div>
-            @Html.ActionLink("Слово "+@Model.Word.Name+" встречается здесь","EditWord","Home",new { Id = item.ParentWordId })
+            @Html.ActionLink((string)("Слово "+@Model.Word.Name+" встречается в слове "+@item.ParentWord),"EditWord","Home",new { Id = item.ParentWordId })
         </div>
     }
 </div>

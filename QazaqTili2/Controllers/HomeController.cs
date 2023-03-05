@@ -169,7 +169,24 @@ namespace QazaqTili2.Controllers
             var files = _context.Files.Where(x => x.WordId == id).ToList();
             ViewBag.Files = files;
 
-            var imageLinks=_context.ImageLinks.Where(x=>x.WordId==id).ToList();
+            //var imageLinks=_context.ImageLinks.Where(x=>x.WordId==id).ToList();
+            //ViewBag.ImageLinks = imageLinks;
+
+            var imageLinks = (from l in _context.ImageLinks
+                             join w in _context.Words on l.WordId equals w.Id
+                         join w1 in _context.Words on l.ParentWordId equals w1.Id
+                         where l.WordId == 14096
+                         orderby l.Id
+                         select new
+                         {
+                             l.Id,
+                             l.ParentWordId,
+                             ParentWord = w1.Name,
+                             l.WordId,
+                             Name = w.Name,
+                             l.CreateTime
+                         }).ToList();
+
             ViewBag.ImageLinks = imageLinks;
 
             //string directoryPath = Request.Scheme + "://" + Request.Host + "/" + files[0].Path;
