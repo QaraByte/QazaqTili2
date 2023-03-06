@@ -33,6 +33,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Analytics" asp-action="Index">Аналитика</a>
                         </li>
+                        @if(!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                            <a href="/Account/Login">Авторизация</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <div>@User.Identity.Name</div>
+                        }
                     </ul>
                 </div>
             </div>

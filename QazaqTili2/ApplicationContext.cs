@@ -39,5 +39,6 @@ namespace QazaqTili2
         public DbSet<YoutubeLinks> YoutubeLinks => Set<YoutubeLinks>();
         public DbSet<FileModel> Files { get; set; }
         public DbSet<ImageLinks> ImageLinks { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

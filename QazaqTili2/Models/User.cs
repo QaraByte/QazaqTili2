@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QazaqTili2.Models
 {
-    public class ImageLinks
+    public class User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key, Column(Order = 0)]
         public int Id { get; set; }
-        public int ParentWordId { get; set; }
-        //public string ParentWord { get; set; }
-        public int WordId { get; set; }
-        public DateTime CreateTime { get; set; }
+        public string Name { get; set; }
+        public string? Email { get; set; }
+        public string Password { get; set; }
+        public DateTime RegDate { get; set; }
     }
 }

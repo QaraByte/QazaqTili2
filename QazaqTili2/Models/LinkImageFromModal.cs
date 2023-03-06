@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public int ParentWordId { get; set; }
         public int WordId { get; set; }
-        public DateTime CerateTime { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

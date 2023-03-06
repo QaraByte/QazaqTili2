@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -92,6 +93,7 @@ namespace QazaqTili2.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddWord([FromBody] WordFromModal model)
         {
@@ -159,6 +161,7 @@ namespace QazaqTili2.Controllers
             return Redirect("Index");
         }
 
+        [Authorize]
         public IActionResult EditWord(int id)
         {
             var word = _context.Words.FirstOrDefault(x => x.Id == id);
@@ -169,14 +172,11 @@ namespace QazaqTili2.Controllers
             var files = _context.Files.Where(x => x.WordId == id).ToList();
             ViewBag.Files = files;
 
-            //var imageLinks=_context.ImageLinks.Where(x=>x.WordId==id).ToList();
-            //ViewBag.ImageLinks = imageLinks;
-
             var imageLinks = (from l in _context.ImageLinks
                              join w in _context.Words on l.WordId equals w.Id
                          join w1 in _context.Words on l.ParentWordId equals w1.Id
-                         where l.WordId == 14096
-                         orderby l.Id
+                         where l.WordId == id
+                              orderby l.Id
                          select new
                          {
                              l.Id,
@@ -382,7 +382,14 @@ namespace QazaqTili2.Controllers
             imageLinks.ParentWordId = model.ParentWordId;
             imageLinks.CreateTime = DateTime.Now;
             _context.ImageLinks.Add(imageLinks);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(418);
+            }
             return Redirect("/Home/EditWord/" + model.WordId);
         }
 

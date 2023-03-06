@@ -113,7 +113,10 @@ $(document).ready(function () {
                 console.log(data);
                 if (data.status == 0)
                     toastr.error('Ошибка приложения.')
-                if (data.responseText.includes('SqlClient') || data.responseText.includes('error'))
+                else if (data.status == 401){
+                    toastr.error('Авторизуйтесь.')
+                }
+                else if (data.responseText.includes('SqlClient') || data.responseText.includes('error'))
                     toastr.error('Ошибка сервера.')
                 else
                     toastr.error(data.responseText);
