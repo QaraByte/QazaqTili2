@@ -32,6 +32,13 @@ namespace QazaqTili2
 
             modelBuilder.Entity<MainIndex>().Property(p => p.Id)
             .HasColumnType("int");
+
+            //modelBuilder.ApplyConfiguration<tentity>.Add(new MyModelConfiguration());
+            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            //base.OnModelCreating(modelBuilder);
+
+            //new AnalytByLetters(modelBuilder.Entity<AnalytByLetters>());
+            modelBuilder.Entity<AnalytByLetters>().HasNoKey();
         }
 
         public DbSet<Word> Words => Set<Word>();
@@ -40,5 +47,6 @@ namespace QazaqTili2
         public DbSet<FileModel> Files { get; set; }
         public DbSet<ImageLinks> ImageLinks { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<AnalytByLetters> AnalytByLetters { get; set; }
     }
 }

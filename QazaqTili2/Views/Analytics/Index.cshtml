@@ -2,6 +2,7 @@
 
     <div class="row">
         <div class="col-md-3">
+<!--Последние добавленные слова-->
 <table class="analyt-10-last">
     <caption>10 последних добавленных слов</caption>
     <thead>
@@ -23,6 +24,7 @@
     </tbody>
 </table>
 </div>
+<!--Последние добавленные картинки-->
 <div class="col-md-3">
     <table class="analyt-5-last-picture">
     <caption>5 последних добавленных картинок</caption>
@@ -42,6 +44,27 @@
             <td>@item.FileName</td>
             <td>@item.UploadTime</td>
             <td>@item.WordName</td>
+        </tr>
+        }
+    </tbody>
+</table>
+</div>
+<!--По буквам-->
+<div class="col-md-3">
+    <table class="analyt-5-last-picture">
+    <caption>Кол-во слов по буквам</caption>
+    <thead>
+        <tr>
+            <th>Буква</th>
+            <th>Кол-во</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.ByLetters)
+        {
+            <tr>
+            <td>@item.FirstLetter</td>
+            <td>@item.Count</td>
         </tr>
         }
     </tbody>

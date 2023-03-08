@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QazaqTili2.Models;
 
 namespace QazaqTili2.Controllers
 {
@@ -29,6 +31,19 @@ namespace QazaqTili2.Controllers
                                         .FirstOrDefault()
                                 })
                                 .ToList();
+
+            var byLetters = _context.Set<AnalytByLetters>().
+                                FromSqlRaw($@"select 'Всего' as FirstLetter, count(1) as Count from Words
+                                                                    union all
+                                                                    select left(w.Name, 1) as FirstLetter, count(1) as Count
+                                                                    from words w
+                                                                    where 1 = 1
+                                                                    group by LEFT(w.Name, 1)")
+                                .ToList();
+
+            ViewBag.ByLetters= byLetters;
+            
+
             return View(lastWords);
         }
     }
