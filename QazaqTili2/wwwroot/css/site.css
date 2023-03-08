@@ -78,3 +78,9 @@ body {
 .selected-page {
     background-color: #e3e57a;
 }
+
+.edit-word-img {
+    border: 5px solid #b58f56;
+    display: inline-block;
+    margin-top:10px;
+}
