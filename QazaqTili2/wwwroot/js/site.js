@@ -152,18 +152,16 @@ $(document).ready(function () {
             }
         })
             .fail(function (data) {
-                //if (data.status == 400) {
                 console.log(data);
                 if (data.status == 0)
                     toastr.error('Ошибка приложения.')
                 if (data.responseText.includes('SqlClient') || data.responseText.includes('error'))
                     toastr.error('Ошибка сервера.')
                 else if (data.status == 400) {
-                    toastr.error(data.statusText);
+                    toastr.error(data.statusText + '. ' + data.responseText);
                 }
                 else
                     toastr.error(data.responseText);
-                //}
             });;
     });
 

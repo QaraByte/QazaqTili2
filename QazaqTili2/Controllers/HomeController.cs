@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -164,7 +165,7 @@ namespace QazaqTili2.Controllers
         [Authorize]
         public IActionResult EditWord(int id)
         {
-            var word = _context.Words.FirstOrDefault(x => x.Id == id);
+            var word = _context.Words.Include(w => w.WordType).FirstOrDefault(x => x.Id == id);
 
             var youtubeLinks = _context.YoutubeLinks.Where(x => x.WordId == id).ToList();
             ViewBag.YLinks = youtubeLinks;
@@ -189,15 +190,20 @@ namespace QazaqTili2.Controllers
 
             ViewBag.ImageLinks = imageLinks;
 
-            //string directoryPath = Request.Scheme + "://" + Request.Host + "/" + files[0].Path;
-            //if (Directory.Exists(directoryPath))
-            //{
-            //    Console.WriteLine("Каталог существует");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Каталог не существует");
-            //}
+            
+            // Получаем все типы слов WordTypes
+            var wordTypes = _context.WordTypes.ToList();
+
+            // Создаем список элементов SelectListItem на основе объектов WordTypes
+            var wordTypeItems = wordTypes.Select(wt => new SelectListItem
+            {
+                Value = wt.Id.ToString(),
+                Text = wt.Name
+            });
+
+            // Передаем список элементов в представление
+            ViewBag.WordTypes = wordTypeItems;
+
 
             ViewData["wordId"] = word.Id;
 
@@ -380,6 +386,10 @@ namespace QazaqTili2.Controllers
             if (word == null)
                 return BadRequest("Слово не найдено.");
 
+            var imgFile = await GetImageInfo(model.ParentWordId);
+            if(imgFile == "400")
+                return BadRequest("Картинка не найдена.");
+
             ImageLinks imageLinks = new ImageLinks();
             imageLinks.WordId = model.WordId;
             imageLinks.ParentWordId = model.ParentWordId;
@@ -436,7 +446,6 @@ namespace QazaqTili2.Controllers
                     {
                         sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
                         sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
-                        //sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
                         sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
                         sb.Append($"<div>...</div>");
                         selected = 0;
@@ -461,78 +470,6 @@ namespace QazaqTili2.Controllers
                     i = countPages - 4;
                 }
 
-                //if (selected - 1 > 0)
-                //    sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
-                //sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
-                //sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
-
-                //i = countPages - 4;
-                //if (i == selected)
-                //    sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
-                //else if (i < 4 || i > countPages - 4)
-                //    sb.Append($"<div class=\"page\" data-page-number=\"{i}\">{i}</div>");
-                //else if (selected > 2 && selected < countPages - 2)
-                //{
-                //    if (i > 3 && i < countPages - 3)
-                //    {
-                //        sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
-                //        //sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
-                //        sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
-                //    }
-                //    if (selected < countPages - 4)
-                //        i = countPages - 4;
-                //}
-
-                //    sb.Append($"<div class=\"page\" data-page-number=\"{i}\">{i}</div>");
-
-                //sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
-                //sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
-
-                //if(i==selected)
-                //{
-                //    if(i>4 && i<countPages-3)
-                //    {
-                //        if (i == selected)
-                //        {
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
-                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
-                //            i = countPages - 4;
-                //        }
-                //    }
-                //    else if(i<5)
-                //    {
-                //        if (i == 1)
-                //        {
-                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 2)}\">{(i + 2)}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 3)}\">{(i + 3)}</div>");
-                //        }
-                //        else if (i == 2)
-                //        {
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 1)}\">{(i - 1)}</div>");
-                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 2)}\">{(i + 2)}</div>");
-                //        }
-                //        else if (i == 3)
-                //        {
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 1)}\">{(i - 1)}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 2)}\">{(i - 2)}</div>");
-                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
-                //        }
-                //        else if (i == 4)
-                //        {
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 1)}\">{(i - 1)}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 2)}\">{(i - 2)}</div>");
-                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
-                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
-                //            i = countPages - 4;
-
-                //if (i < selected - 1)
-                //    i = selected - 1;
             }
             return sb.ToString();
         }

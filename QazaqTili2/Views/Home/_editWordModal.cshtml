@@ -28,6 +28,12 @@
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
+                            <span class="input-group-text">Тип слова</span>
+                        </div>
+                        @Html.DropDownListFor(model => model.WordTypeId, ViewBag.WordTypes as IEnumerable<SelectListItem>, "--Выберите тип слова--")
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Время создания</span>
                         </div>
                         <input type="text" class="form-control" id="createtime" readonly name="createtime" aria-label="word-createtime" aria-describedby="word-createtime-modal">

@@ -21,9 +21,9 @@ namespace QazaqTili2
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Word>()
-                .HasOne(w => w.WordTypes)
-                .WithMany(wt => wt.Words)
-                .HasForeignKey(w => w.WordTypeId);
+            .HasOne(w => w.WordType)
+            .WithMany(t => t.Words)
+            .HasForeignKey(w => w.WordTypeId);
 
             modelBuilder.Entity<YoutubeLinks>()
                 .HasOne(w => w.Words)

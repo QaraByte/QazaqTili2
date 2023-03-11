@@ -4,6 +4,7 @@
 <div>
     <p>Id: <span>@Model.Word.Id</span></p>
     <p>Слово: <span class="word-name">@Model.Word.Name</span></p>
+    <p>Тип слова: <span>@Model.Word.WordTypeId - @Model.Word.WordType?.Name</span></p>
     <p>Время создания: <span class="createtime">@Model.Word.CreateTime</span></p>
     <p>
         <a href="/Home/EditWordName" class="edit-word" data-id="@Model.Word.Id" data-bs-toggle="modal" data-bs-target="#editWordNameModal">
