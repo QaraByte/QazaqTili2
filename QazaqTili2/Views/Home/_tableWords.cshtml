@@ -1,4 +1,5 @@
-﻿@model List<MainIndex>
+﻿@using QazaqTili2.Controllers
+@model List<MainIndex>
 
 <table class="words">
     <caption>Всего слов: @ViewBag.WordsCount</caption>
@@ -46,15 +47,13 @@
 </table>
 
 <div style="display:inline-flex;">
-@for(var i = 1; i <= ViewBag.PagesCount; i++)
-    {
-        if (i == ViewBag.SelectedPage)
-        {
-            <div class="page selected-page" data-page-number="@i">@i</div>
-        }
-        else
-        {
-            <div class="page" data-page-number="@i">@i</div>
-        }
-    }
+    @*@(HomeController home=new HomeController(null,null).GetPages(ViewBag.PagesCount,ViewBag.SelectedPage);)*@
+    @*@Html.Action("SelectedPage", "Home", new { countPages = ViewBag.PagesCount, selected=ViewBag.SelectedPage })*@
+    @{
+    var countPages = ViewBag.PagesCount;
+    var selected = ViewBag.SelectedPage;
+    var pagesHtml = new HomeController(null,null).GetPages(countPages, selected);
+}
+
+@Html.Raw(pagesHtml)
 </div>

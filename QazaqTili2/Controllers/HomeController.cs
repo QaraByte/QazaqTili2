@@ -294,6 +294,9 @@ namespace QazaqTili2.Controllers
 
             ViewBag.WordsCount = result.Count;
 
+            ViewBag.PagesCount=result.Count/20;
+            ViewBag.SelectedPage = 1;
+
             return PartialView("_tableWords", result);
         }
 
@@ -399,6 +402,139 @@ namespace QazaqTili2.Controllers
             if(img==null)
                 return "400";
             return img.Name;
+        }
+
+        public string GetPages(int countPages, int selected)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i < countPages; i++)
+            {
+                if (i == selected)
+                    sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                else
+                    sb.Append($"<div class=\"page\" data-page-number=\"{i}\">{i}</div>");
+
+                if(i>2)
+                {
+
+                    if (selected == 3)
+                    {
+                        sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+                        sb.Append($"<div>...</div>");
+                        selected = 0;
+                        i = countPages - 4;
+                    }
+                    else if (selected == 4)
+                    {
+                        sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                        sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+                        sb.Append($"<div>...</div>");
+                        selected = 0;
+                        i = countPages - 4;
+                    }
+                    else if (selected == 5)
+                    {
+                        sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
+                        sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                        //sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
+                        sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+                        sb.Append($"<div>...</div>");
+                        selected = 0;
+                        i = countPages - 4;
+                    }
+                    else if (selected > 5 && selected < countPages - 4)
+                    {
+                        //if (selected > 6)
+                            sb.Append($"<div>...</div>");
+                        sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
+                        sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                        sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+                        sb.Append($"<div>...</div>");
+                        selected = 0;
+                        i = countPages - 4;
+                    }
+                }
+
+                if (i > 2 && i < countPages - 4)
+                {
+                    sb.Append($"<div>...</div>");
+                    i = countPages - 4;
+                }
+
+                //if (selected - 1 > 0)
+                //    sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
+                //sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                //sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+
+                //i = countPages - 4;
+                //if (i == selected)
+                //    sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                //else if (i < 4 || i > countPages - 4)
+                //    sb.Append($"<div class=\"page\" data-page-number=\"{i}\">{i}</div>");
+                //else if (selected > 2 && selected < countPages - 2)
+                //{
+                //    if (i > 3 && i < countPages - 3)
+                //    {
+                //        sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
+                //        //sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                //        sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+                //    }
+                //    if (selected < countPages - 4)
+                //        i = countPages - 4;
+                //}
+
+                //    sb.Append($"<div class=\"page\" data-page-number=\"{i}\">{i}</div>");
+
+                //sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                //sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+
+                //if(i==selected)
+                //{
+                //    if(i>4 && i<countPages-3)
+                //    {
+                //        if (i == selected)
+                //        {
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(selected - 1)}\">{(selected - 1)}</div>");
+                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{selected}\">{selected}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(selected + 1)}\">{(selected + 1)}</div>");
+                //            i = countPages - 4;
+                //        }
+                //    }
+                //    else if(i<5)
+                //    {
+                //        if (i == 1)
+                //        {
+                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 2)}\">{(i + 2)}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 3)}\">{(i + 3)}</div>");
+                //        }
+                //        else if (i == 2)
+                //        {
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 1)}\">{(i - 1)}</div>");
+                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 2)}\">{(i + 2)}</div>");
+                //        }
+                //        else if (i == 3)
+                //        {
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 1)}\">{(i - 1)}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 2)}\">{(i - 2)}</div>");
+                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
+                //        }
+                //        else if (i == 4)
+                //        {
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 1)}\">{(i - 1)}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i - 2)}\">{(i - 2)}</div>");
+                //            sb.Append($"<div class=\"page selected-page\" data-page-number=\"{i}\">{i}</div>");
+                //            sb.Append($"<div class=\"page\" data-page-number=\"{(i + 1)}\">{(i + 1)}</div>");
+                //            i = countPages - 4;
+
+                //if (i < selected - 1)
+                //    i = selected - 1;
+            }
+            return sb.ToString();
         }
     }
 

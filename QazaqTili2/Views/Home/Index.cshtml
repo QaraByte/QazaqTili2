@@ -4,10 +4,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!-- Button trigger modal -->
+@if(User.Identity.IsAuthenticated)
+{
+    <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
     Добавить новое слово
 </button>
+}
+
 <p></p>
 <input type="text" class="form-control" id="search-word">
 
