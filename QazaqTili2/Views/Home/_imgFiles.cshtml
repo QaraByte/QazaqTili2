@@ -1,0 +1,33 @@
+﻿@model List<FileModel>
+
+<div class="slideshow-container">
+    @{
+        int i = 0;
+    }
+    @foreach (var file in Model)
+    {
+    <div class="mySlide fade1">
+        <div class="numberText">@(i=i+1)/@(Model.Count)</div>
+        <img src="@Url.Content("~/")@file.Path" @*style="width:100%;"*@ alt="@file.Name">
+        <div class="imgText">@file.Name</div>
+    </div>
+    }
+    <a class="prev" onclick="plusSlides(-1)">&#10094</a>
+    <a class="next" onclick="plusSlides(1)">&#10095</a>
+</div>
+
+<br />
+<div style="text-align:center;">
+    @{
+        int slide = 0;
+    }
+    @foreach (var item in Model)
+    {
+        <span class="dot" onclick="currentSlide(@(slide=slide+1))"></span>
+    }
+</div>
+
+<link href="@Url.Content("~/css/imgfiles.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="@Url.Content("~/js/imgfiles.js")"></script>
+

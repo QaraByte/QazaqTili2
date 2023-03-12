@@ -29,7 +29,7 @@
     @foreach (var item in ViewBag.YLinks)
     {
         <p class="edit-links">
-            Название: <span class="title">@item.Name</span>
+            Название: <span class="title">@item.NameVideo</span>
             <br>
             Ссылка:
             <a href="@item.Url" class="video-link" data-id="@item.Id" target="_blank">@item.Url</a>
@@ -43,15 +43,7 @@
         </p>
     }
 
-    <div>
-    @foreach (var file in ViewBag.Files)
-    {
-        <div class="edit-word-img">
-            @*<a href="@Url.Content("~/")@file.Path" target="_blank">@file.Name</a>*@
-            <img src="@Url.Content("~/")@file.Path" alt="@file.Name">
-        </div>
-    }
-    </div>
+    @await Html.PartialAsync("_imgFiles", (List<FileModel>)ViewBag.Files)
 
     @foreach(var item in ViewBag.ImageLinks)
     {

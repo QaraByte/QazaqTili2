@@ -162,7 +162,7 @@ namespace QazaqTili2.Controllers
             return Redirect("Index");
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult EditWord(int id)
         {
             var word = _context.Words.Include(w => w.WordType).FirstOrDefault(x => x.Id == id);
@@ -209,7 +209,7 @@ namespace QazaqTili2.Controllers
 
             ModelForDropDownWords model = new ModelForDropDownWords();
             //model.SelectedOption = 7;
-            model.Options = _context.Words.Select(x => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).OrderBy(c => c.Text).ToList();
+            model.Options = _context.Words.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).OrderBy(c => c.Text).ToList();
 
             EditWordModel editWordModel = new EditWordModel()
             {
@@ -246,8 +246,8 @@ namespace QazaqTili2.Controllers
                     link.Url = item.Value;
                 if (item.Key == "wordtime")
                     link.WordTime = item.Value;
-                if (item.Key == "name" && !string.IsNullOrEmpty(item.Value))
-                    link.Name = item.Value;
+                if (item.Key == "nameVideo" && !string.IsNullOrEmpty(item.Value))
+                    link.NameVideo = item.Value;
             }
 
             if (id == 0)
