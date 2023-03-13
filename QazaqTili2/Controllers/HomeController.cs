@@ -293,7 +293,17 @@ namespace QazaqTili2.Controllers
         public IActionResult SearchWord(string word)
         {
             //Wo
-            var result = _context.Words.Where(x => x.Name.StartsWith(word)).Select(y => new MainIndex { Id = y.Id, Name = y.Name, CreateTime = y.CreateTime }).ToList();
+            //var result = _context.Words.Where(x => x.Name.StartsWith(word)).Select(y => new MainIndex { Id = y.Id, Name = y.Name, CreateTime = y.CreateTime }).ToList();
+            var result = _context.Words
+                        .Where(x => x.Name.StartsWith(word))
+                        .Select(y => new MainIndex
+                        {
+                            Id = y.Id,
+                            Name = y.Name,
+                            CreateTime = y.CreateTime,
+                            Count = y.YoutubeLinks.Count()
+                        })
+                        .ToList();
 
             //List<MainIndex> main = new List<MainIndex>();
             //main.Add(new MainIndex { Id=1, Name = result[0] })
